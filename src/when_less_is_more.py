@@ -158,7 +158,7 @@ def runXGB(train_X, train_y, seed_val=0):
 
 if __name__ == "__main__":
 	start_time = datetime.datetime.now()
-	data_path = "./"
+	data_path = "../input/"
 	train_file =  open(data_path + "train_ver2.csv")
 	x_vars_list, y_vars_list, cust_dict_save = processData(train_file, {})
 	train_X = np.array(x_vars_list)
@@ -168,7 +168,7 @@ if __name__ == "__main__":
 	train_file.close()
 	print(train_X.shape, train_y.shape)
 	print(datetime.datetime.now()-start_time)
-	test_file = open(data_path + "test_input.csv")
+	test_file = open(data_path + "test_ver2.csv")
 	# with open('cust_dict_save.pkl', 'wb') as f:
 	# 	pickle.dump(cust_dict_save, f)
         
@@ -194,7 +194,7 @@ if __name__ == "__main__":
 	target_cols = np.array(target_cols)
 	preds = np.argsort(preds, axis=1)
 	preds = np.fliplr(preds)[:,:7]
-	test_id = np.array(pd.read_csv(data_path + "test_input.csv", usecols=['ncodpers'])['ncodpers'])
+	test_id = np.array(pd.read_csv(data_path + "test_ver2.csv", usecols=['ncodpers'])['ncodpers'])
 	final_preds = [" ".join(list(target_cols[pred])) for pred in preds]
 	out_df = pd.DataFrame({'ncodpers':test_id, 'added_products':final_preds})
 	out_df.to_csv('sub_xgb_new.csv', index=False)
