@@ -31,19 +31,19 @@ def parse_params(args):
 	return [dict(zip(parsed, t)) for t in zip_longest(*parsed.values(), fillvalue='')]
 
 def check_input_valid(params):
+	result = True
+	missing_params = []
 	for row in params:
 		if '' not in [row['fecha_dato'], row['ncodpers']]:
 			continue
 		else:
-			missing_params = []
 			if not row['fecha_dato']: 
 				missing_params.append('fecha_dato')
 			if not row['ncodpers']: 
 				missing_params.append('ncodpers')			
-			error_msg = 'Error: invalid input format. The following parameters are missing: ' + ', '.join(missing_params)
-			return False, error_msg
-	return True, ''
-
+			
+	error_msg = 'Error: invalid input format. The following parameters are missing: ' + ', '.join(missing_params) if len(missing_params) else ''					
+	return (False, error_msg) if error_msg else (True, '')
 
 # making a class for a particular resource
 # the get, post methods correspond to get and post requests
