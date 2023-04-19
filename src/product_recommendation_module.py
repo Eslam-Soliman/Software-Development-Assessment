@@ -95,37 +95,37 @@ def getRent(row):
 def processRow(toPredict, cust_dict):
 	x_vars_list = []
 	y_vars_list = []
-	row = toPredict
 
-	if row['fecha_dato'] not in ['2015-05-28', '2015-06-28', '2016-05-28', '2016-06-28']:
-		return x_vars_list
+	for row in toPredict:
+		if row['fecha_dato'] not in ['2015-05-28', '2015-06-28', '2016-05-28', '2016-06-28']:
+			return x_vars_list
 
-	cust_id = int(row['ncodpers'])
-	if row['fecha_dato'] in ['2015-05-28', '2016-05-28']:	
-		target_list = getTarget(row)
-		cust_dict[cust_id] =  target_list[:]
-		return x_vars_list
+		cust_id = int(row['ncodpers'])
+		if row['fecha_dato'] in ['2015-05-28', '2016-05-28']:	
+			target_list = getTarget(row)
+			cust_dict[cust_id] =  target_list[:]
+			return x_vars_list
 
-	x_vars = []
-	for col in cat_cols:
-		x_vars.append( getIndex(row, col) )
-	x_vars.append( getAge(row) )
-	x_vars.append( getCustSeniority(row) )
-	x_vars.append( getRent(row) )
+		x_vars = []
+		for col in cat_cols:
+			x_vars.append( getIndex(row, col) )
+		x_vars.append( getAge(row) )
+		x_vars.append( getCustSeniority(row) )
+		x_vars.append( getRent(row) )
 
-	if row['fecha_dato'] == '2016-06-28':
-		prev_target_list = cust_dict.get(cust_id, [0]*22)
-		x_vars_list.append(x_vars + prev_target_list)
-	elif row['fecha_dato'] == '2015-06-28':
-		prev_target_list = cust_dict.get(cust_id, [0]*22)
-		target_list = getTarget(row)
-		new_products = [max(x1 - x2,0) for (x1, x2) in zip(target_list, prev_target_list)]
-		if sum(new_products) > 0:
-			for ind, prod in enumerate(new_products):
-				if prod>0:
-					assert len(prev_target_list) == 22
-					x_vars_list.append(x_vars+prev_target_list)
-					y_vars_list.append(ind)
+		if row['fecha_dato'] == '2016-06-28':
+			prev_target_list = cust_dict.get(cust_id, [0]*22)
+			x_vars_list.append(x_vars + prev_target_list)
+		elif row['fecha_dato'] == '2015-06-28':
+			prev_target_list = cust_dict.get(cust_id, [0]*22)
+			target_list = getTarget(row)
+			new_products = [max(x1 - x2,0) for (x1, x2) in zip(target_list, prev_target_list)]
+			if sum(new_products) > 0:
+				for ind, prod in enumerate(new_products):
+					if prod>0:
+						assert len(prev_target_list) == 22
+						x_vars_list.append(x_vars+prev_target_list)
+						y_vars_list.append(ind)
 
 	return x_vars_list
 
@@ -141,7 +141,7 @@ def predict(model, helper_data, toPredict):
 	target_cols = np.array(target_cols)
 	preds = np.argsort(preds, axis=1)
 	preds = np.fliplr(preds)[:,:7]
-	test_id = np.array(toPredict['ncodpers'])
+	test_id = [d['ncodpers'] for d in toPredict]
 	final_preds = [" ".join(list(target_cols[pred])) for pred in preds]
 	out_df = {'ncodpers':test_id, 'added_products':final_preds}
 	return out_df
