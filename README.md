@@ -38,3 +38,10 @@ http://127.0.0.1:5000?fecha_dato=2016-06-28&ncodpers=15889&ind_empleado=F&pais_r
 |ind_actividad_cliente|No           |     
 |renta                |No           |
 |segmento             |No           |
+
+- Possible responses
+
+|Status code        |Example Response|
+|-------------------|----------------|
+|201                |{"data": "{\"ncodpers\": [\"15889\"], \"added_products\": [\"ind_cco_fin_ult1 ind_cno_fin_ult1 ind_ecue_fin_ult1 ind_nomina_ult1 ind_nom_pens_ult1 ind_recibo_ult1 ind_dela_fin_ult1\"]}"}|
+|400                |{"message": "Error: invalid input format. The following parameters are missing: fecha_dato"}|
