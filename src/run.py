@@ -26,7 +26,7 @@ def parse_params(args):
 	input_params = ['fecha_dato', 'ncodpers', 'ind_empleado', 'pais_residencia', 'sexo', 'age', 'fecha_alta', 'antiguedad', 'tiprel_1mes', 'cod_prov', 'ind_actividad_cliente', 'renta', 'segmento']
 	parsed = {}
 	for param in input_params:
-		parsed[param] = args.get(param).split(',') or []
+		parsed[param] = (args.get(param) or '').split(',')
 	
 	return [dict(zip(parsed, t)) for t in zip_longest(*parsed.values(), fillvalue='')]
 
