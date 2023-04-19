@@ -38,7 +38,7 @@ def getTarget(row):
 
 def getIndex(row, col):
 	val = row[col].strip()
-	if val not in ['','NA']:
+	if val not in ['','NA'] and val in list(mapping_dict[col].keys()):
 		ind = mapping_dict[col][val]
 	else:
 		ind = mapping_dict[col][-99]
