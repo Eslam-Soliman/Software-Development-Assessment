@@ -19,6 +19,7 @@ http://127.0.0.1:5000?fecha_dato=2016-06-28&ncodpers=15889&ind_empleado=F&pais_r
 ## API Documentation
 - The API has a single POST endpoint for recommending banking products to users based on their banking and social information
 - The API POST endpoint only accepts parameters send in the query URL
+- Each parameter in the parameters list can take one value or multiple values (for multiple input rows), separated by a comma.
 
 - Endpoint parameters
 
